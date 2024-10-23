@@ -112,8 +112,6 @@ export default class DMenuBtn extends Vue {
   @Prop({ required: false, default: true })
   sortable!: boolean;
 
-  formerColumns: Column[] = [];
-
   expanded = false;
   search = "";
 
@@ -145,23 +143,18 @@ export default class DMenuBtn extends Vue {
 
   toggleAllColumns() {
     if (this.allSelected) {
-      if (this.formerColumns.length) {
-        this.$emit("input", this.formerColumns);
-      } else {
-        this.$emit(
-          "input",
-          this.value.map((c: Column) => {
-            const { hidden, ...old } = c;
-            return {
-              ...old,
-              hidden: true,
-            };
-          })
-        );
-      }
-    } else {
-      this.formerColumns = this.value.map((c: Column) => ({ ...c }));
-
+      this.$emit(
+        "input",
+        this.value.map((c: Column) => {
+          const { hidden, ...old } = c;
+          return {
+            ...old,
+            hidden: true,
+          };
+        })
+      );
+    }
+    else {
       this.$emit(
         "input",
         this.value.map((c: Column) => {
@@ -176,7 +169,6 @@ export default class DMenuBtn extends Vue {
   }
 
   onlyColumn(column: Column): void {
-    this.formerColumns = [];
     this.$emit(
       "input",
       this.value.map((c: Column) => {
@@ -190,7 +182,6 @@ export default class DMenuBtn extends Vue {
   }
 
   toggleColumn(column: Column): void {
-    this.formerColumns = [];
     this.$emit(
       "input",
       this.value.map((c: Column) => {
@@ -205,7 +196,6 @@ export default class DMenuBtn extends Vue {
   }
 
   dropColumn(value: Column[]) {
-    this.formerColumns = [];
     this.$emit(
       "input",
       value.map((c: Column, i: number) => {
